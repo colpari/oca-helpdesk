@@ -59,6 +59,13 @@
               (not user_id and stage_id == 1 and hours_since_open &gt;= 48)  or (stage_id == 2 and hours_in_stage &gt; 168) or (stage_id == 3 and hours_in_stage &gt; 120)
             </attribute>
           </xpath>
+
+          <xpath expr="//field[@name='last_stage_update']" position="after">
+            <field name="sla_expired" optional="hide"/>
+            <field name="hours_since_open" optional="hide"/>
+            <field name="hours_in_stage" optional="hide"/>
+          </xpath>
+
       </field>
     </record>
 
