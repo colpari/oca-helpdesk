@@ -1,16 +1,34 @@
-#    Copyright (C) 2020 GARCO Consulting <www.garcoconsulting.es>
+# Copyright (C) 2023 colpari GmbH <colpari.cx>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
-class HelpdeskTicket(models.Model):
+class colpariHelpdeskTicket(models.Model):
     _inherit = "helpdesk.ticket"
 
-    team_sla = fields.Boolean(string="Team SLA", compute="_compute_team_sla")
     sla_expired = fields.Boolean(string="SLA expired")
     sla_deadline = fields.Datetime(string="SLA deadline")
 
+    team_sla = fields.Boolean(string="Team SLA", compute="_compute_team_sla")
+
+    @api.depends('team_id.use_sla')
     def _compute_team_sla(self):
         for rec in self:
             rec.team_sla = rec.team_id.use_sla
+
+    hours_since_open = fields.Float(compute='_comp_hours_since_open')
+
+    @api.depends('create_date')
+    def _comp_hours_since_open(self):
+        now = datetime.now()
+        for ticket in self:
+            ticket.hours_since_open = (now - ticket.create_date).total_seconds() / 3600
+
+    hours_in_stage = fields.Float(compute='_comp_hours_in_stage')
+
+    @api.depends('last_stage_update')
+    def _comp_hours_in_stage(self):
+        now = datetime.now()
+        for ticket in self:
+            ticket.hours_in_stage = (now - ticket.last_stage_update).total_seconds() / 3600

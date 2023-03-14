@@ -23,6 +23,7 @@
             </xpath>
         </field>
     </record>
+
     <record id="inherit_helpdesk_ticket_view_form" model="ir.ui.view">
         <field name="name">inherit.helpdesk.ticket.form.view</field>
         <field name="model">helpdesk.ticket</field>
@@ -39,4 +40,26 @@
             </xpath>
         </field>
     </record>
+
+    <record id="inherited_ticket_view_tree" model="ir.ui.view">
+      <field name="name">inherited.helpdesk.ticket.view.tree</field>
+      <field name="model">helpdesk.ticket</field>
+      <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_tree"/>
+      <field name="arch" type="xml">
+          <xpath expr="//tree" position="attributes">
+            <attribute name="multi_edit">1</attribute>
+            <attribute name="expand">1</attribute>
+            <attribute name="decoration-info">
+              (not user_id and stage_id == 1 and hours_since_open &gt;= 24 and hours_since_open &lt; 36)
+            </attribute>
+            <attribute name="decoration-warning">
+              (not user_id and stage_id == 1 and hours_since_open &gt;= 36 and hours_since_open &lt; 48)  or (stage_id == 2 and hours_in_stage &gt; 120) or (stage_id == 3 and hours_in_stage &gt; 120)
+            </attribute>
+            <attribute name="decoration-danger">
+              (not user_id and stage_id == 1 and hours_since_open &gt;= 48)  or (stage_id == 2 and hours_in_stage &gt; 168) or (stage_id == 3 and hours_in_stage &gt; 120)
+            </attribute>
+          </xpath>
+      </field>
+    </record>
+
 </odoo>
