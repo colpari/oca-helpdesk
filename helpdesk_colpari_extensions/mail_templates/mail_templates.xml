@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <!-- ====== helpdesk.ticket ====== -->
+        <record id="colpari_helpdesk_ticket_personal" model="mail.template">
+            <field name="name">colpari personal message (helpdesk.ticket)</field>
+            <field name="model_id" ref="helpdesk_mgmt.model_helpdesk_ticket"/>
+            <field name="email_to">{{ object.partner_email }}</field>
+            <field name="subject"></field>
+            <field name="lang">{{ object.partner_id and object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html" type="html">
+                <div>
+                    <t t-call="colpari_templates.mail_header_colpari"></t>
+                    <div style="box-sizing:border-box;font-family:Arial,sans-serif;font-size:13px;width: 590px; margin-right:auto; margin-left:auto;">
+                    ### WRITE HERE ###
+                    </div>
+                    <t t-call="colpari_templates.mail_signature_personal"></t>
+                    <div t-field="object.last_incoming_body_cite"/>
+                </div>
+            </field>
+        </record>
+
+
+        <record id="colpari_helpdesk_ticket_generic" model="mail.template">
+            <field name="name">colpari non-personal message (helpdesk.ticket)</field>
+            <field name="model_id" ref="helpdesk_mgmt.model_helpdesk_ticket"/>
+            <field name="email_to">{{ object.partner_email }}</field>
+            <field name="email_from">"colpari Client Support"  &lt;client-support@colpari.services&gt;</field>
+            <field name="subject"></field>
+            <field name="lang">{{ object.partner_id and object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html" type="html">
+                <div>
+                    <t t-call="colpari_templates.mail_header_colpari"></t>
+                    <div style="box-sizing:border-box;font-family:Arial,sans-serif;font-size:13px;width: 590px; margin-right:auto; margin-left:auto;">
+                    ### WRITE HERE ###
+                    </div>
+                    <t t-call="colpari_templates.mail_footer_colpari"></t>
+                    <div t-field="object.last_incoming_body_cite"/>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>
